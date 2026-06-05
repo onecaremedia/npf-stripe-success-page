@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Save your payment method - Sleep Doctor</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px 60px;
+        }
+
+        .logo { margin-bottom: 32px; }
+        .logo img { max-width: 240px; height: auto; }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 32px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            margin-bottom: 24px;
+        }
+
+        .brand-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .brand-dot {
+            width: 28px;
+            height: 28px;
+            background-color: #1a6b5e;
+            border-radius: 50%;
+        }
+
+        .brand-name { font-weight: 600; font-size: 15px; }
+
+        h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 10px;
+        }
+
+        .no-charge-msg {
+            font-size: 15px;
+            color: #4b5563;
+            margin-bottom: 24px;
+        }
+
+        .no-charge-msg strong { color: #111; }
+
+        /* Cost breakdown */
+        .breakdown {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+        }
+
+        .breakdown-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 6px 0;
+            font-size: 15px;
+            color: #374151;
+        }
+
+        .breakdown-row .label { display: flex; align-items: baseline; gap: 6px; }
+        .breakdown-row .sublabel { font-size: 12px; color: #9ca3af; }
+        .breakdown-row .amount { font-weight: 500; }
+
+        .breakdown-divider {
+            border: none;
+            border-top: 1px dashed #d1d5db;
+            margin: 8px 0;
+        }
+
+        .breakdown-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 15px;
+            font-weight: 700;
+            color: #111;
+            padding-top: 6px;
+        }
+
+        /* Cash pay box */
+        .cash-pay-box {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #374151;
+            display: none;
+        }
+
+        .cash-pay-box a { color: #1a56db; font-weight: 600; text-decoration: none; }
+        .cash-pay-box a:hover { text-decoration: underline; }
+
+        /* Button */
+        .btn-save {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background-color: #1a56db;
+            color: white;
+            text-align: center;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            margin-bottom: 12px;
+        }
+
+        .btn-save:hover { background-color: #1e429f; }
+
+        .estimate-note {
+            font-size: 13px;
+            color: #6b7280;
+            text-align: center;
+        }
+
+        /* How we estimate section */
+        .section { margin-bottom: 28px; }
+
+        .section h2 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 12px;
+        }
+
+        .section p {
+            font-size: 14px;
+            color: #4b5563;
+            margin-bottom: 10px;
+        }
+
+        .steps { list-style: none; padding: 0; }
+
+        .steps li {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #4b5563;
+        }
+
+        .step-num {
+            min-width: 24px;
+            height: 24px;
+            background: #e5e7eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #374151;
+            flex-shrink: 0;
+        }
+
+        .good-faith {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            border-radius: 6px;
+            padding: 14px 16px;
+            font-size: 13px;
+            color: #374151;
+            margin-top: 12px;
+        }
+
+        .good-faith strong { color: #b45309; }
+
+        @media (max-width: 640px) {
+            .container { padding: 24px 16px 48px; }
+            .card { padding: 24px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="SD_logo.jpg" alt="Sleep Doctor">
+        </div>
+
+        <div class="card">
+            <div class="brand-row">
+                <div class="brand-dot"></div>
+                <span class="brand-name">Sleep Doctor</span>
+            </div>
+
+            <h1>Save your payment method</h1>
+            <p class="no-charge-msg">We'll keep your card on file for your sleep care. <strong>You won't be charged today</strong> — we charge at the time of each service and always show you the amount first.</p>
+
+            <div class="breakdown" id="breakdown">
+                <!-- populated by JS -->
+            </div>
+
+            <div class="cash-pay-box" id="cash-pay-box">
+                Prefer to skip insurance? You can pay a flat <a href="https://sleepdoctor.com/products/home-sleep-apnea-test">$189 cash price</a> for your home sleep test.
+            </div>
+
+            <a class="btn-save" id="save-btn" href="#">Save payment method →</a>
+
+            <p class="estimate-note">This is an estimate. Your final cost is confirmed with your insurer after each visit.</p>
+        </div>
+
+        <!-- How we estimate -->
+        <div class="card">
+            <div class="section">
+                <h2>How billing works</h2>
+                <ul class="steps">
+                    <li><span class="step-num">1</span> We securely save your card. You're not charged today.</li>
+                    <li><span class="step-num">2</span> After each service, we charge your estimated cost to your card on file.</li>
+                    <li><span class="step-num">3</span> Your insurer reviews the claim and may adjust the final cost (for example, based on your deductible).</li>
+                    <li><span class="step-num">4</span> If you were overcharged, we refund the difference. If undercharged, we email you, then charge the balance.</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>How we estimate your cost</h2>
+                <p>Your estimate is our best projection of what you'll pay, based on what we know today about your insurance plan's benefits and the services you're receiving. The final cost usually matches or comes close.</p>
+            </div>
+
+            <div class="section">
+                <h2>Why your cost may change</h2>
+                <p>Occasionally the final cost differs from the estimate, because some information can't be confirmed until your insurer processes the claim — for example, changes to your deductible, plan resets, or unexpected plan details.</p>
+
+                <div class="good-faith">
+                    <strong>Good Faith Estimate.</strong> If your final cost is expected to exceed your estimate by more than $400, we'll provide a Good Faith Estimate, in line with healthcare requirements.
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Auto corrections</h2>
+                <p>You're automatically refunded if you were overcharged, or charged the balance if you were undercharged — no need to remember a separate payment. We'll always email you at least 3 days before any correction charge, including the date, amount, and the card on file.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SERVICE_LABELS = {
+            initial: { name: "Pre-test consult", sub: "est. copay" },
+            follow_up: { name: "Post-test follow-up", sub: "est. copay" },
+            sleep_study: { name: "Home sleep test", sub: "est. with insurance" },
+        };
+
+        const params = new URLSearchParams(window.location.search);
+        const checkoutUrl = params.get('checkout_url');
+        const total = parseFloat(params.get('total') || '0');
+        const showCashPay = params.get('show_cash_pay') === '1';
+
+        // Wire save button
+        if (checkoutUrl) {
+            document.getElementById('save-btn').href = checkoutUrl;
+        }
+
+        // Show cash pay box
+        if (showCashPay) {
+            document.getElementById('cash-pay-box').style.display = 'block';
+        }
+
+        // Build breakdown
+        const breakdown = document.getElementById('breakdown');
+        const serviceKeys = ['initial', 'sleep_study', 'follow_up'];
+        let rows = '';
+
+        serviceKeys.forEach(key => {
+            const val = params.get(key);
+            if (val === null) return;
+            const amount = parseFloat(val);
+            const label = SERVICE_LABELS[key] || { name: key, sub: '' };
+            rows += `
+                <div class="breakdown-row">
+                    <span class="label">${label.name} <span class="sublabel">${label.sub}</span></span>
+                    <span class="amount">$${amount.toFixed(2)}</span>
+                </div>`;
+        });
+
+        if (rows) {
+            breakdown.innerHTML = rows + `
+                <hr class="breakdown-divider">
+                <div class="breakdown-total">
+                    <span>Estimated total out-of-pocket</span>
+                    <span>$${total.toFixed(2)}</span>
+                </div>`;
+        } else {
+            breakdown.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
