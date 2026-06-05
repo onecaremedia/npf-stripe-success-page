@@ -264,7 +264,7 @@
         const params = new URLSearchParams(window.location.search);
         const checkoutUrl = params.get('checkout_url');
         const total = parseFloat(params.get('total') || '0');
-        const showCashPay = params.get('show_cash_pay') === '1';
+        const showCashPay = true;
 
         // Wire save button
         if (checkoutUrl) {
