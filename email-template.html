@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Sleep Doctor payment page is ready</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f8f9fa;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f8f9fa;padding:40px 20px;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+
+          <!-- Logo -->
+          <tr>
+            <td align="center" style="padding-bottom:32px;">
+              <img src="https://onecaremedia.github.io/npf-stripe-success-page/SD_logo.jpg" alt="Sleep Doctor" width="200" style="display:block;">
+            </td>
+          </tr>
+
+          <!-- Card -->
+          <tr>
+            <td style="background:#ffffff;border-radius:10px;padding:40px;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+
+              <!-- Greeting -->
+              <p style="margin:0 0 16px;font-size:16px;color:#4b5563;">Hi {{first_name}},</p>
+
+              <!-- Heading -->
+              <h1 style="margin:0 0 16px;font-size:22px;font-weight:700;color:#111111;">Your insurance verification is complete.</h1>
+
+              <!-- Body -->
+              <p style="margin:0 0 24px;font-size:15px;color:#4b5563;line-height:1.6;">
+                Your estimated co-pay is <strong style="color:#111111;">${{copay_total}}</strong>. You can now securely save your payment method — <strong style="color:#111111;">no charge today.</strong>
+              </p>
+
+              <!-- Copay note -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f7ff;border-radius:6px;margin-bottom:28px;">
+                <tr>
+                  <td style="padding:14px 18px;font-size:14px;color:#2c4a6e;line-height:1.6;">
+                    We charge at the time of each service and always email you before any charge is made.
+                  </td>
+                </tr>
+              </table>
+
+              <!-- CTA Button -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+                <tr>
+                  <td align="center">
+                    <a href="{{checkout_page_url}}" style="display:inline-block;background-color:#1a56db;color:#ffffff;text-decoration:none;font-size:16px;font-weight:600;padding:14px 32px;border-radius:6px;">Save my payment method →</a>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Note -->
+              <p style="margin:0;font-size:13px;color:#6b7280;text-align:center;">
+                This link is unique to you. If you have any questions, contact us at <a href="mailto:info@sleepdoctor.com" style="color:#1a56db;text-decoration:none;">info@sleepdoctor.com</a>
+              </p>
+
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td align="center" style="padding-top:24px;font-size:12px;color:#9ca3af;">
+              Sleep Doctor &mdash; <a href="https://sleepdoctor.com" style="color:#9ca3af;">sleepdoctor.com</a>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
