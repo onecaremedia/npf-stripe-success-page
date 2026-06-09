@@ -98,6 +98,17 @@
             padding-top: 6px;
         }
 
+        /* Pending estimate notice */
+        .estimate-pending {
+            background: #f0f7ff;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #2c4a6e;
+            line-height: 1.6;
+        }
+
         /* Cash pay box */
         .cash-pay-box {
             border: 1px solid #e5e7eb;
@@ -175,8 +186,6 @@
             flex-shrink: 0;
         }
 
-        .good-faith strong { color: #b45309; }
-
         @media (max-width: 640px) {
             .container { padding: 24px 16px 48px; }
             .card { padding: 24px 20px; }
@@ -202,13 +211,17 @@
                 <!-- populated by JS -->
             </div>
 
+            <div class="estimate-pending" id="estimate-pending" style="display:none;">
+                We're verifying your insurance benefits — this usually takes just a few minutes. <strong>You'll receive an email with your cost estimate shortly.</strong>
+            </div>
+
             <div class="cash-pay-box" id="cash-pay-box">
                 Prefer to skip insurance? You can pay a flat <a href="https://sleepdoctor.com/products/home-sleep-apnea-test">$189 cash price</a> for your home sleep test.
             </div>
 
             <a class="btn-save" id="save-btn" href="#">Save payment method →</a>
 
-            <p class="estimate-note">This is an estimate. Your final cost is confirmed with your insurer after each visit.</p>
+            <p class="estimate-note" id="estimate-note">This is an estimate. Your final cost is confirmed with your insurer after each visit.</p>
         </div>
 
         <!-- How we estimate -->
@@ -231,7 +244,6 @@
             <div class="section">
                 <h2>Why your cost may change</h2>
                 <p>Occasionally the final cost differs from the estimate, because some information can't be confirmed until your insurer processes the claim — for example, changes to your deductible, plan resets, or unexpected plan details.</p>
-
             </div>
 
             <div class="section">
@@ -251,44 +263,52 @@
         const params = new URLSearchParams(window.location.search);
         const checkoutUrl = params.get('checkout_url');
         const total = parseFloat(params.get('total') || '0');
-        const showCashPay = true;
+        const hasEstimate = !!params.get('total');
+        const showCashPay = params.get('show_cash_pay') === '1';
 
         // Wire save button
         if (checkoutUrl) {
             document.getElementById('save-btn').href = checkoutUrl;
         }
 
-        // Show cash pay box
-        if (showCashPay) {
-            document.getElementById('cash-pay-box').style.display = 'block';
-        }
+        if (hasEstimate) {
+            // Show cash pay box if applicable
+            if (showCashPay) {
+                document.getElementById('cash-pay-box').style.display = 'block';
+            }
 
-        // Build breakdown
-        const breakdown = document.getElementById('breakdown');
-        const serviceKeys = ['initial', 'sleep_study', 'follow_up'];
-        let rows = '';
+            // Build breakdown
+            const breakdown = document.getElementById('breakdown');
+            const serviceKeys = ['initial', 'sleep_study', 'follow_up'];
+            let rows = '';
 
-        serviceKeys.forEach(key => {
-            const val = params.get(key);
-            if (val === null) return;
-            const amount = parseFloat(val);
-            const label = SERVICE_LABELS[key] || { name: key, sub: '' };
-            rows += `
-                <div class="breakdown-row">
-                    <span class="label">${label.name} <span class="sublabel">${label.sub}</span></span>
-                    <span class="amount">$${amount.toFixed(2)}</span>
-                </div>`;
-        });
+            serviceKeys.forEach(key => {
+                const val = params.get(key);
+                if (val === null) return;
+                const amount = parseFloat(val);
+                const label = SERVICE_LABELS[key] || { name: key, sub: '' };
+                rows += `
+                    <div class="breakdown-row">
+                        <span class="label">${label.name} <span class="sublabel">${label.sub}</span></span>
+                        <span class="amount">$${amount.toFixed(2)}</span>
+                    </div>`;
+            });
 
-        if (rows) {
-            breakdown.innerHTML = rows + `
-                <hr class="breakdown-divider">
-                <div class="breakdown-total">
-                    <span>Estimated total out-of-pocket</span>
-                    <span>$${total.toFixed(2)}</span>
-                </div>`;
+            if (rows) {
+                breakdown.innerHTML = rows + `
+                    <hr class="breakdown-divider">
+                    <div class="breakdown-total">
+                        <span>Estimated total out-of-pocket</span>
+                        <span>$${total.toFixed(2)}</span>
+                    </div>`;
+            } else {
+                breakdown.style.display = 'none';
+            }
         } else {
-            breakdown.style.display = 'none';
+            // No estimate yet — hide breakdown, show pending notice
+            document.getElementById('breakdown').style.display = 'none';
+            document.getElementById('estimate-pending').style.display = 'block';
+            document.getElementById('estimate-note').style.display = 'none';
         }
     </script>
 </body>
