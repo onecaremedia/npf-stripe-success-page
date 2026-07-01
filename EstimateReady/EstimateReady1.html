@@ -77,10 +77,10 @@
       <p class="lead">We'll keep your card on file for your sleep care. <b>You won't be charged today</b> — we charge at the time of each service and always show you the amount first.</p>
 
       <div class="rows">
-        <div class="row"><span class="lbl">Pre-test consult <small>est. copay</small></span><span class="amt">$25.00</span></div>
-        <div class="row"><span class="lbl">Home sleep test <small>est. with insurance</small></span><span class="amt">$25.00</span></div>
-        <div class="row"><span class="lbl">Post-test follow-up <small>est. copay</small></span><span class="amt">$25.00</span></div>
-        <div class="row total"><span class="lbl">Estimated total out-of-pocket</span><span class="amt">$75.00</span></div>
+        <div class="row"><span class="lbl">Pre-test consult <small>est. copay</small></span><span class="amt" id="cost-initial">$25.00</span></div>
+        <div class="row"><span class="lbl">Home sleep test <small>est. with insurance</small></span><span class="amt" id="cost-sleep-study">$25.00</span></div>
+        <div class="row"><span class="lbl">Post-test follow-up <small>est. copay</small></span><span class="amt" id="cost-follow-up">$25.00</span></div>
+        <div class="row total"><span class="lbl">Estimated total out-of-pocket</span><span class="amt" id="cost-total">$75.00</span></div>
       </div>
 
       <p class="cash">Prefer to skip insurance? You can pay a flat <a href="#">$189 cash price</a> for your home sleep test instead.</p>
@@ -109,5 +109,61 @@
       <p class="body-txt">You're automatically refunded if you were overcharged, or charged the balance if you were undercharged — no need to remember a separate payment. We'll always email you at least 3 days before any correction charge, including the date, amount, and the card on file.</p>
     </div>
   </div>
+<script>
+  (function () {
+    const p = new URLSearchParams(window.location.search);
+    const checkoutUrl = p.get("checkout_url");
+    const total       = p.get("total");
+    const initial     = p.get("initial");
+    const followUp    = p.get("follow_up");
+    const sleepStudy  = p.get("sleep_study");
+    const showCash    = p.get("show_cash_pay") === "1";
+
+    // Wire Stripe button — find any <a> whose href contains "#stripe-payment-url" or href="#stripe-payment-url"
+    document.querySelectorAll('a[href="#stripe-payment-url"], a[href*="stripe-payment-url"]').forEach(el => {
+      if (checkoutUrl) el.href = checkoutUrl;
+    });
+
+    // Render cost amounts — look for elements by id or data attribute
+    // Try IDs first, then fall back to text search
+    function setById(id, val) {
+      const el = document.getElementById(id);
+      if (el && val) el.textContent = "$" + parseFloat(val).toFixed(2);
+    }
+    setById("cost-initial",     initial);
+    setById("cost-follow-up",   followUp);
+    setById("cost-sleep-study", sleepStudy);
+    setById("cost-total",       total);
+
+    // Also update any elements containing hardcoded $25.00 placeholders
+    // by looking for data-cost attributes
+    document.querySelectorAll("[data-cost='initial']").forEach(el => {
+      if (initial) el.textContent = "$" + parseFloat(initial).toFixed(2);
+    });
+    document.querySelectorAll("[data-cost='follow_up']").forEach(el => {
+      if (followUp) el.textContent = "$" + parseFloat(followUp).toFixed(2);
+    });
+    document.querySelectorAll("[data-cost='sleep_study']").forEach(el => {
+      if (sleepStudy) el.textContent = "$" + parseFloat(sleepStudy).toFixed(2);
+    });
+    document.querySelectorAll("[data-cost='total']").forEach(el => {
+      if (total) el.textContent = "$" + parseFloat(total).toFixed(2);
+    });
+
+    // Hide cash pay option if show_cash_pay != 1
+    if (!showCash) {
+      document.querySelectorAll("[data-cash-option], .cash-option, #cash-option").forEach(el => {
+        el.style.display = "none";
+      });
+    }
+
+    // Fix the $189 cash price link if it's a placeholder
+    document.querySelectorAll('a[href="#"]').forEach(el => {
+      if (el.textContent.toLowerCase().includes("cash") || el.textContent.includes("189")) {
+        el.href = "https://sleepdoctor.com/products/home-sleep-apnea-test";
+      }
+    });
+  })();
+</script>
 </body>
 </html>

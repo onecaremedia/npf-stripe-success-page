@@ -3,14 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Your estimate is ready — Sleep Doctor</title>
+<title>Your plan doesn't cover this service — Sleep Doctor</title>
 <style>
   :root{
     --navy:#2b3658; --ink:#1f2746; --muted:#697188; --muted2:#8a93a5;
     --bg:#f5f6f8; --card:#ffffff; --line:#e7eaf0;
     --blue:#2f6bff; --blue-dark:#2457d6; --link:#2f6bff;
-    --info:#eaf1fe; --green:#15a06b; --green-bg:#e9f7ef; --green-bd:#bfe6cf; --green-tx:#1d7a4d;
-    --row:#f3f5f9;
+    --info:#eaf1fe; --green:#15a06b;
     --radius:16px; --shadow:0 1px 3px rgba(20,30,60,.06),0 8px 24px rgba(20,30,60,.05);
   }
   *{box-sizing:border-box}
@@ -20,40 +19,44 @@
   .wrap{max-width:560px;margin:0 auto;padding:44px 20px 60px;}
   .logo{display:flex;justify-content:center;margin:10px 0 34px;}
   .logo svg{width:200px;height:auto;}
-  .logo .word{font-weight:800;letter-spacing:.14em;font-size:19px;color:var(--navy);line-height:1.05}
   .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px 24px;margin-bottom:20px;}
   .pill{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:14px;}
-  .pill .dot{width:9px;height:9px;border-radius:50%;background:var(--green);}
+  .pill .dot{width:9px;height:9px;border-radius:50%;background:#e5534b;}
   h1{font-size:23px;font-weight:800;margin:0 0 12px;color:var(--ink);letter-spacing:-.01em;}
   p{margin:0 0 14px;color:var(--muted);font-size:15px;}
   .lead{color:#414b66;}
   .lead b{color:var(--ink);}
-  .rows{background:#f4f5f8;border:1px solid var(--line);border-radius:12px;padding:6px 18px;margin:18px 0 16px;}
-  .row{display:flex;justify-content:space-between;align-items:baseline;padding:11px 0;font-size:15px;}
-  .row .lbl{color:#39425c;}
-  .row .lbl small{color:var(--muted2);font-size:12px;margin-left:6px;font-weight:500;}
-  .row .amt{font-variant-numeric:tabular-nums;color:#39425c;}
-  .row.total{border-top:1px solid #dde2ec;margin-top:2px;padding-top:14px;padding-bottom:13px;font-weight:800;}
-  .row.total .lbl{font-weight:800;color:var(--ink);}
-  .row.total .amt{font-weight:800;color:var(--ink);}
-  .onfile{display:flex;gap:11px;align-items:flex-start;background:var(--green-bg);border:1px solid var(--green-bd);border-radius:12px;padding:14px 16px;font-size:14px;color:#2f5a44;line-height:1.5;margin:0 0 16px;}
-  .onfile svg{flex:none;margin-top:1px}
-  .onfile b{color:var(--green-tx);}
-  .cash{font-size:14px;color:var(--muted);margin:0 0 18px;}
-  .cash a{color:var(--link);font-weight:700;text-decoration:none;}
+  .notice{display:flex;gap:12px;background:var(--info);border-radius:12px;padding:15px 16px;font-size:14px;color:#3f4a6b;line-height:1.55;margin:6px 0 22px;}
+  .notice svg{flex:none;margin-top:2px}
+  .notice b{color:var(--ink);}
+  .divider{border:0;border-top:1px solid var(--line);margin:24px 0 18px;}
+  .eyebrow{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);margin:0 0 8px;}
+  .cash-box{border:1px solid var(--line);border-radius:10px;padding:13px 16px;font-size:14px;color:var(--muted);line-height:1.5;margin:0 0 18px;background:#fcfdfe;}
+  .cash-box a{color:var(--link);font-weight:700;text-decoration:none;}
   .btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;
     background:var(--blue);color:#fff;border:0;border-radius:10px;padding:15px 18px;
     font-size:16px;font-weight:700;cursor:pointer;text-decoration:none;
     box-shadow:0 6px 16px rgba(47,107,255,.28);transition:background .15s;}
   .btn:hover{background:var(--blue-dark);}
   .disclaimer{font-size:12px;color:var(--muted2);text-align:center;margin:14px 4px 0;}
+  .save-title{font-size:18px;font-weight:800;margin:0 0 10px;color:var(--ink);}
   h2{font-size:17px;font-weight:800;margin:22px 0 12px;color:var(--ink);}
   h2:first-child{margin-top:4px;}
-  .steps{list-style:none;margin:0 0 4px;padding:0;}
-  .steps li{display:flex;gap:12px;margin-bottom:13px;font-size:14px;color:var(--muted);}
-  .steps .n{flex:none;width:22px;height:22px;border-radius:50%;background:var(--info);color:var(--blue);
-    font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;}
   .body-txt{font-size:14px;color:var(--muted);margin-bottom:6px;}
+  /* Breakdown rows — matching .rows/.row/.amt/.lbl/.cash style */
+  .rows{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:0 0 18px;}
+  .row{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;font-size:14px;border-bottom:1px solid var(--line);}
+  .row:last-child{border-bottom:0;}
+  .row.total{background:var(--bg);font-weight:800;}
+  .lbl{color:var(--muted);display:flex;align-items:center;gap:8px;}
+  .lbl svg{flex:none;color:var(--green);}
+  .amt{font-weight:700;color:var(--ink);}
+  .cash{font-size:20px;font-weight:800;color:var(--ink);}
+  .included{font-size:13px;font-weight:600;color:var(--green);background:#e8faf3;border-radius:6px;padding:2px 8px;}
+  .contact-line{font-size:14px;color:var(--muted);text-align:center;margin:16px 4px 0;line-height:1.6;}
+  .contact-line a{color:var(--link);font-weight:600;text-decoration:none;}
+  .footer{text-align:center;font-size:12px;color:var(--muted2);margin-top:24px;}
+  .footer a{color:var(--link);text-decoration:none;font-weight:600;}
 </style>
 </head>
 <body>
@@ -77,83 +80,54 @@
     </div>
 
     <div class="card">
-      <h1>Your estimate is ready</h1>
-      <p class="lead">Here's your personalized cost estimate based on your insurance benefits. <b>You won't be charged today</b> — we charge at the time of each service and always show you the amount first.</p>
+      <div class="pill"><span class="dot"></span>Coverage not available</div>
+      <h1>Your plan doesn't cover this service</h1>
+      <p class="lead">Based on the benefits information we received, your insurance plan doesn't include coverage for home sleep testing. <b>The good news — you can still get tested with our flat-rate cash pay option.</b></p>
+
+      <div class="notice">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2f6bff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="13"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <div><b>No hidden costs.</b> Our cash pay option is a single flat rate — no surprise bills, no deductible calculations, no waiting for an EOB.</div>
+      </div>
+
+      <hr class="divider">
+      <p class="eyebrow">What's included</p>
+      <p class="save-title">Everything you need, one flat rate</p>
 
       <div class="rows">
-        <div class="row"><span class="lbl">Pre-test consult <small>est. copay</small></span><span class="amt" id="cost-initial">$25.00</span></div>
-        <div class="row"><span class="lbl">Home sleep test <small>est. with insurance</small></span><span class="amt" id="cost-sleep-study">$25.00</span></div>
-        <div class="row"><span class="lbl">Post-test follow-up <small>est. copay</small></span><span class="amt" id="cost-follow-up">$25.00</span></div>
-        <div class="row total"><span class="lbl">Estimated total out-of-pocket</span><span class="amt" id="cost-total">$75.00</span></div>
+        <div class="row">
+          <span class="lbl">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Pre-test consult
+          </span>
+          <span class="included">Included</span>
+        </div>
+        <div class="row">
+          <span class="lbl">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Home sleep test
+          </span>
+          <span class="included">Included</span>
+        </div>
+        <div class="row">
+          <span class="lbl">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Post-test follow-up
+          </span>
+          <span class="included">Included</span>
+        </div>
+        <div class="row total">
+          <span class="lbl" style="color:var(--ink);font-weight:800;">Total</span>
+          <span class="cash">$189</span>
+        </div>
       </div>
 
-      <div class="onfile">
-        <svg width="22" height="16" viewBox="0 0 22 16" fill="none"><rect x="1" y="1" width="20" height="14" rx="2.5" stroke="#3fae73" stroke-width="1.6"/><rect x="1" y="4.5" width="20" height="3" fill="#3fae73"/></svg>
-        <div><b>Your card is already on file</b> — nothing more to enter. We'll only charge it after each service.</div>
-      </div>
+      <a class="btn" href="https://sleepdoctor.com/products/home-sleep-apnea-test">Get started — $189 cash pay →</a>
+      <p class="disclaimer">No insurance needed · flat rate, no hidden fees</p>
 
-      <p class="cash">Estimate higher than expected? You can pay a flat <a href="#">$189 cash price</a> for your home sleep test instead.</p>
-
-      <a class="btn" href="#">Schedule my appointment →</a>
-      <p class="disclaimer">This is an estimate. Your final cost is confirmed with your insurer after each visit.</p>
+      <p class="contact-line">Have questions about your coverage? Call us at <a href="tel:+18443523307">+1 (844) 352-3307</a> or email <a href="mailto:contact@sleepdoctor.com">contact@sleepdoctor.com</a></p>
     </div>
 
-    <div class="card">
-      <h2>How billing works</h2>
-      <ol class="steps">
-        <li><span class="n">1</span><span>Your card is securely on file. You're not charged today.</span></li>
-        <li><span class="n">2</span><span>After each service, we charge your estimated cost to your card on file.</span></li>
-        <li><span class="n">3</span><span>Your insurer reviews the claim and may adjust the final cost (for example, based on the deductible).</span></li>
-        <li><span class="n">4</span><span>If you were overcharged, we refund the difference. If undercharged, we email you, then charge the balance.</span></li>
-      </ol>
-
-      <h2>How we estimate your cost</h2>
-      <p class="body-txt">Your estimate is our best projection of what you'll pay, based on what we know about your insurance plan's benefits and the services you're receiving. The final cost usually matches or comes close.</p>
-
-      <h2>Why your cost may change</h2>
-      <p class="body-txt">Occasionally the final cost differs from the estimate, because some information can't be confirmed until your insurer processes the claim — for example, changes to your deductible, plan resets, or unexpected plan details.</p>
-
-      <h2>Auto corrections</h2>
-      <p class="body-txt">You're automatically refunded if you were overcharged, or charged the balance if you were undercharged — no need to remember a separate payment. We'll always email you at least 3 days before any correction charge, including the date, amount, and the card on file.</p>
-    </div>
+    <p class="footer">Sleep Doctor &middot; Questions? <a href="mailto:contact@sleepdoctor.com">contact@sleepdoctor.com</a></p>
   </div>
-<script>
-  (function () {
-    const p = new URLSearchParams(window.location.search);
-    const total      = p.get("total");
-    const initial    = p.get("initial");
-    const followUp   = p.get("follow_up");
-    const sleepStudy = p.get("sleep_study");
-
-    function setById(id, val) {
-      const el = document.getElementById(id);
-      if (el && val) el.textContent = "$" + parseFloat(val).toFixed(2);
-    }
-    setById("cost-initial",     initial);
-    setById("cost-follow-up",   followUp);
-    setById("cost-sleep-study", sleepStudy);
-    setById("cost-total",       total);
-
-    document.querySelectorAll("[data-cost='initial']").forEach(el => {
-      if (initial) el.textContent = "$" + parseFloat(initial).toFixed(2);
-    });
-    document.querySelectorAll("[data-cost='follow_up']").forEach(el => {
-      if (followUp) el.textContent = "$" + parseFloat(followUp).toFixed(2);
-    });
-    document.querySelectorAll("[data-cost='sleep_study']").forEach(el => {
-      if (sleepStudy) el.textContent = "$" + parseFloat(sleepStudy).toFixed(2);
-    });
-    document.querySelectorAll("[data-cost='total']").forEach(el => {
-      if (total) el.textContent = "$" + parseFloat(total).toFixed(2);
-    });
-
-    // Fix placeholder hrefs
-    document.querySelectorAll('a[href="#"]').forEach(el => {
-      if (el.textContent.toLowerCase().includes("cash") || el.textContent.includes("189")) {
-        el.href = "https://sleepdoctor.com/products/home-sleep-apnea-test";
-      }
-    });
-  })();
-</script>
 </body>
 </html>

@@ -21,12 +21,26 @@
         <tr><td style="background:#ffffff;border-radius:16px;padding:38px 34px 30px;text-align:center;box-shadow:0 8px 28px rgba(20,30,60,.06);">
           <table role="presentation" cellpadding="0" cellspacing="0" align="center"><tr><td align="center" style="width:56px;height:56px;background:#e3efe6;border-radius:50%;font-size:24px;color:#3f7d5b;line-height:56px;">&#10003;</td></tr></table>
 
+          <p style="margin:0 0 14px;font-size:16px;color:#697188;text-align:left;">Hi {{first_name}},</p>
           <h1 style="font-size:25px;font-weight:800;color:#1f2746;margin:22px 0 14px;letter-spacing:-.01em;">Your estimate is ready</h1>
           <p style="font-size:15px;color:#697188;line-height:1.6;margin:0 0 26px;">Good news — we heard back from your insurance provider and your personalized cost estimate for your Home Sleep Study is ready to view. Click below to review it and complete your order.</p>
 
+
+          <!-- Cost breakdown -->
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 18px;">
+            <tr><td style="background:#f4f5f8;border:1px solid #e7eaf0;border-radius:12px;padding:6px 18px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                {{services_rows}}
+                <tr>
+                  <td style="padding:14px 0 13px;font-size:15px;font-weight:800;color:#1f2746;border-top:1px solid #dde2ec;">Estimated total out-of-pocket</td>
+                  <td style="padding:14px 0 13px;font-size:15px;font-weight:800;color:#1f2746;border-top:1px solid #dde2ec;text-align:right;">${{copay_total}}</td>
+                </tr>
+              </table>
+            </td></tr>
+          </table>
           <table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto 14px;"><tr>
             <td style="background:#2f6bff;border-radius:10px;">
-              <a href="EstimateReadyOpenToSchedule.html" style="display:inline-block;padding:15px 30px;font-size:16px;font-weight:700;color:#ffffff;text-decoration:none;">View my estimate &rarr;</a>
+              <a href="{{checkout_page_url}}" style="display:inline-block;padding:15px 30px;font-size:16px;font-weight:700;color:#ffffff;text-decoration:none;">View my estimate &rarr;</a>
             </td>
           </tr></table>
           <p style="font-size:12px;color:#9aa2b4;line-height:1.5;margin:0 0 24px;">This secure link takes you to your estimate, where you can review it and schedule your appointment.</p>
