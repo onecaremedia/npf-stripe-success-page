@@ -2,7 +2,7 @@ name: Deploy to GCS
 
 on:
   push:
-    branches: ["**"]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -15,15 +15,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set deploy folder
-        id: env
-        run: |
-          if [[ "${{ github.ref_name }}" == "main" ]]; then
-            echo "folder=prod" >> "$GITHUB_OUTPUT"
-          else
-            echo "folder=sandbox" >> "$GITHUB_OUTPUT"
-          fi
-
       - id: auth
         uses: google-github-actions/auth@v2
         with:
@@ -32,9 +23,14 @@ jobs:
 
       - uses: google-github-actions/setup-gcloud@v2
 
-      - name: Sync to GCS
+      - name: Sync prod
         run: |
           gsutil -m -h "Cache-Control:no-cache,no-store" rsync \
             -r -d \
-            -x "^\.github/" \
-            . gs://${{ vars.GCP_BUCKET }}/${{ steps.env.outputs.folder }}
+            ./prod gs://${{ vars.GCP_BUCKET }}/prod
+
+      - name: Sync sandbox
+        run: |
+          gsutil -m -h "Cache-Control:no-cache,no-store" rsync \
+            -r -d \
+            ./sandbox gs://${{ vars.GCP_BUCKET }}/sandbox
