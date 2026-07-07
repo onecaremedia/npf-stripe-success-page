@@ -1,0 +1,40 @@
+name: Deploy to GCS
+
+on:
+  push:
+    branches: ["**"]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write   # required for Workload Identity Federation
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set environment
+        id: env
+        run: |
+          if [[ "${{ github.ref_name }}" == "main" ]]; then
+            echo "bucket=${{ vars.GCP_BUCKET_PROD }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "bucket=${{ vars.GCP_BUCKET_DEV }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
+
+      - uses: google-github-actions/setup-gcloud@v2
+
+      - name: Sync to GCS
+        run: |
+          gsutil -m -h "Cache-Control:no-cache,no-store" rsync \
+            -r -d \
+            -x "^\.github/" \
+            . gs://${{ steps.env.outputs.bucket }}
