@@ -66,8 +66,8 @@
       <p class="sub">No charge has been made to your card today.</p>
       <div class="info">Your estimated co-pay will only be charged after your insurance verification is complete. We'll email you before any charge is made.</div>
       <p class="next">You're all set — go ahead and book your appointment.</p>
-      <!-- Set href to your scheduling URL (e.g. the Canvas/scheduling page for Dr. Mehta) -->
-      <a class="btn" href="https://sleepdoctor.com/schedule">Schedule my appointment →</a>
+      <!-- Button is wired to SCHEDULING_URL by the script below. -->
+      <a class="btn" href="#scheduling-url">Schedule my appointment →</a>
       <hr class="rule">
       <div class="contact-block">
         <p>Have questions? We're here to help.</p>
@@ -77,8 +77,8 @@
     </div>
   </div>
 <script>
-  // Scheduling URL — update this to the real booking/scheduling page
-  const SCHEDULING_URL = "https://sleepdoctor.com/schedule";
+  // ⚠️ CONFIG — PROD: this is the DEV Canvas scheduling URL. Change to the production Canvas scheduling URL before prod deploy.
+  const SCHEDULING_URL = "https://sleepdoctor-dev.canvasmedical.com/app/reset?action=activate";
   document.querySelectorAll('a[href="#scheduling-url"], a[href*="scheduling-url"]').forEach(el => {
     el.href = SCHEDULING_URL;
   });

@@ -94,7 +94,8 @@
 
       <p class="cash">Estimate higher than expected? You can pay a flat <a href="#">$189 cash price</a> for your home sleep test instead.</p>
 
-      <a class="btn" href="#">Schedule my appointment →</a>
+      <!-- Button is wired to SCHEDULING_URL by the script below. -->
+      <a class="btn" href="#scheduling-url">Schedule my appointment →</a>
       <p class="disclaimer">This is an estimate. Your final cost is confirmed with your insurer after each visit.</p>
     </div>
 
@@ -145,6 +146,12 @@
     });
     document.querySelectorAll("[data-cost='total']").forEach(el => {
       if (total) el.textContent = "$" + parseFloat(total).toFixed(2);
+    });
+
+    // ⚠️ CONFIG — PROD: this is the DEV Canvas scheduling URL. Change to the production Canvas scheduling URL before prod deploy.
+    const SCHEDULING_URL = "https://sleepdoctor-dev.canvasmedical.com/app/reset?action=activate";
+    document.querySelectorAll('a[href="#scheduling-url"], a[href*="scheduling-url"]').forEach(el => {
+      el.href = SCHEDULING_URL;
     });
 
     // Fix placeholder hrefs

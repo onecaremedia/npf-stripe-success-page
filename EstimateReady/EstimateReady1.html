@@ -117,7 +117,6 @@
     const initial     = p.get("initial");
     const followUp    = p.get("follow_up");
     const sleepStudy  = p.get("sleep_study");
-    const showCash    = p.get("show_cash_pay") === "1";
 
     // Wire Stripe button — find any <a> whose href contains "#stripe-payment-url" or href="#stripe-payment-url"
     document.querySelectorAll('a[href="#stripe-payment-url"], a[href*="stripe-payment-url"]').forEach(el => {
@@ -150,12 +149,7 @@
       if (total) el.textContent = "$" + parseFloat(total).toFixed(2);
     });
 
-    // Hide cash pay option if show_cash_pay != 1
-    if (!showCash) {
-      document.querySelectorAll("[data-cash-option], .cash-option, #cash-option").forEach(el => {
-        el.style.display = "none";
-      });
-    }
+    // Cash-pay option is always shown (show_cash_pay is intentionally ignored).
 
     // Fix the $189 cash price link if it's a placeholder
     document.querySelectorAll('a[href="#"]').forEach(el => {

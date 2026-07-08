@@ -86,7 +86,8 @@
 
       <div class="cash-box">Prefer to skip insurance? You can pay a flat <a href="#">$189 cash price</a> for your home sleep test instead.</div>
 
-      <a class="btn" href="EstimateNotReadyPaymentSaved.html">Save payment method →</a>
+      <!-- Forwards the patient to the hosted Stripe page, which collects the card. href is set to the Stripe Checkout URL at runtime from the checkout_url query param. -->
+      <a class="btn" href="#stripe-payment-url">Save payment method →</a>
       <p class="disclaimer">No charge today · payments are securely processed by Stripe</p>
     </div>
 
@@ -111,11 +112,21 @@
     </div>
   </div>
 <script>
-  document.querySelectorAll('a[href="#"]').forEach(el => {
-    if (el.textContent.toLowerCase().includes("cash") || el.textContent.includes("189")) {
-      el.href = "https://sleepdoctor.com/cart/41836382290016:1";
-    }
-  });
+  (function () {
+    const checkoutUrl = new URLSearchParams(window.location.search).get("checkout_url");
+
+    // Wire the Stripe button to the hosted checkout URL passed in the query string
+    document.querySelectorAll('a[href="#stripe-payment-url"], a[href*="stripe-payment-url"]').forEach(el => {
+      if (checkoutUrl) el.href = checkoutUrl;
+    });
+
+    // Fix the $189 cash price link if it's a placeholder
+    document.querySelectorAll('a[href="#"]').forEach(el => {
+      if (el.textContent.toLowerCase().includes("cash") || el.textContent.includes("189")) {
+        el.href = "https://sleepdoctor.com/cart/41836382290016:1";
+      }
+    });
+  })();
 </script>
 </body>
 </html>
