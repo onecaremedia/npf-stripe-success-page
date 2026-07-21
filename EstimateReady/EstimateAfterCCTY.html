@@ -77,8 +77,20 @@
     </div>
   </div>
 <script>
-  // ⚠️ CONFIG — PROD: this is the DEV Canvas scheduling URL. Change to the production Canvas scheduling URL before prod deploy.
-  const SCHEDULING_URL = "https://sleepdoctor-dev.canvasmedical.com/app/reset?action=activate";
+  // Send the patient to the booking scheduler, forwarding the intake unique_id
+  // that the Stripe success_url placed on this page's URL. The scheduler
+  // resolves unique_id -> Canvas id server-side, so the Canvas id never
+  // appears in the browser.
+  // NOTE: must be the virtual-hosted GCS origin
+  // (…sleep-care-gemini-public-pages.storage.googleapis.com) — the scheduler
+  // calls the booking API from the browser and its CORS ALLOWED_ORIGIN is set
+  // to that exact origin. The path-style storage.googleapis.com/<bucket>/ form
+  // would be blocked.
+  const uid = new URLSearchParams(window.location.search).get("unique_id") || "";
+  const SCHEDULER_BASE = "https://sleep-care-gemini-public-pages.storage.googleapis.com/frontend/index.html";
+  const SCHEDULING_URL = uid
+    ? `${SCHEDULER_BASE}?unique_id=${encodeURIComponent(uid)}`
+    : SCHEDULER_BASE;
   document.querySelectorAll('a[href="#scheduling-url"], a[href*="scheduling-url"]').forEach(el => {
     el.href = SCHEDULING_URL;
   });
